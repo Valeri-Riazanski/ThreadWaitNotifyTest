@@ -63,21 +63,40 @@ public class Book {
     public void setFlag() {
         this.flag = !flag;
     }
-    public synchronized void set(int n, String str) throws InterruptedException {
+    public synchronized void setUp(int n, String str) throws InterruptedException {
+        System.out.println("setList before while  n= " + n + flag);
         while (flag) {
 
             try {
-                this.wait(100);
+                this.notifyAll();
+                System.out.println(Thread.currentThread().getName() + Thread.currentThread().getState());
+                this.wait();
+                System.out.println(Thread.currentThread().getName() + Thread.currentThread().getState());
                 setFlag();
-
 
             } catch (InterruptedException e) {
             }
         }
         System.out.println("setList after while  n= " + n + flag);
         this.list.set(n, str);
-        //System.out.println(list.toString());
-        this.notifyAll();
-    }
 
+    }
+    public synchronized void setDown(int n, String str) throws InterruptedException {
+        System.out.println("setList before while  n= " + n + flag);
+        while (flag) {
+
+            try {
+                this.notifyAll();
+                System.out.println(Thread.currentThread().getName() + Thread.currentThread().getState());
+                this.wait();
+                System.out.println(Thread.currentThread().getName() + Thread.currentThread().getState());
+                setFlag();
+
+            } catch (InterruptedException e) {
+            }
+        }
+        System.out.println("setList after while  n= " + n + flag);
+        this.list.set(n, str);
+
+    }
 }
